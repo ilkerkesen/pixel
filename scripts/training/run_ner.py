@@ -26,8 +26,7 @@ import transformers
 import wandb
 
 from pixel import (
-    AutoConfig,
-    AutoModelForTokenClassification,
+    auto_register,
     Modality,
     NERDataset,
     PangoCairoTextRenderer,
@@ -43,6 +42,8 @@ from pixel.data.datasets.ner_dataset import write_predictions_to_file as write_n
 from seqeval.metrics import accuracy_score, f1_score, precision_score, recall_score
 from torch import nn
 from transformers import (
+    AutoConfig,
+    AutoModelForTokenClassification,
     AutoTokenizer,
     EarlyStoppingCallback,
     EvalPrediction,

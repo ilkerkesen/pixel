@@ -1,4 +1,3 @@
-from .auto import *
 from .bert import *
 from .biaffine import *
 from .masking import *

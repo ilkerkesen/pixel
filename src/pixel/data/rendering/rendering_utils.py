@@ -14,12 +14,11 @@ from transformers.file_utils import (
     PushToHubMixin,
     RepositoryNotFoundError,
     RevisionNotFoundError,
-    cached_path,
     copy_func,
-    hf_bucket_url,
     is_offline_mode,
-    is_remote_url,
 )
+from transformers.utils.hub import cached_file, is_remote_url, hf_hub_url
+from transformers.utils import cached_file as cached_path
 
 logger = logging.getLogger(__name__)
 
@@ -234,14 +233,15 @@ class TextRenderingMixin(PushToHubMixin):
         elif os.path.isfile(pretrained_model_name_or_path) or is_remote_url(pretrained_model_name_or_path):
             text_renderer_file = pretrained_model_name_or_path
         else:
-            text_renderer_file = hf_bucket_url(
+            text_renderer_file = cached_file(
                 pretrained_model_name_or_path, filename=TEXT_RENDERER_NAME, revision=revision, mirror=None
             )
 
         try:
             # Load from URL or cache if already cached
-            resolved_text_renderer_file = cached_path(
-                text_renderer_file,
+            resolved_text_renderer_file = cached_file(
+                pretrained_model_name_or_path,
+                TEXT_RENDERER_NAME,
                 cache_dir=cache_dir,
                 force_download=force_download,
                 proxies=proxies,
@@ -347,14 +347,16 @@ class TextRenderingMixin(PushToHubMixin):
         elif os.path.isfile(pretrained_model_name_or_path) or is_remote_url(pretrained_model_name_or_path):
             font_file = pretrained_model_name_or_path
         else:
-            font_file = hf_bucket_url(
-                pretrained_model_name_or_path, filename=font_file_name, revision=revision, mirror=None
+            font_file = hf_hub_url(
+                pretrained_model_name_or_path, filename=font_file_name, revision=revision,
             )
 
         try:
             # Load from URL or cache if already cached
-            resolved_font_file = cached_path(
-                font_file,
+            resolved_font_file = cached_file(
+                pretrained_model_name_or_path,
+                font_file_name,
+                revision=revision,
                 cache_dir=cache_dir,
                 force_download=force_download,
                 proxies=proxies,

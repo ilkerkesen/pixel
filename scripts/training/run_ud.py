@@ -27,8 +27,8 @@ import numpy as np
 import transformers
 import wandb
 from pixel import (
-    AutoConfig,
-    AutoModelForBiaffineParsing,
+    auto_register,
+    PIXELForBiaffineParsing,
     UD_HEAD_LABELS,
     Modality,
     PangoCairoTextRenderer,
@@ -41,6 +41,7 @@ from pixel import (
     resize_model_embeddings,
 )
 from transformers import (
+    AutoConfig,
     AutoTokenizer,
     EarlyStoppingCallback,
     EvalPrediction,
@@ -277,7 +278,7 @@ def get_model_and_config(model_args: argparse.Namespace):
         config.pad_token_id = -100
 
     if config.model_type in ["vit_mae", "pixel", "bert", "roberta"]:
-        model = AutoModelForBiaffineParsing.from_pretrained(
+        model = PIXELForBiaffineParsing.from_pretrained(
             model_args.model_name_or_path,
             config=config,
             **config_kwargs,

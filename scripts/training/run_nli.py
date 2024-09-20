@@ -31,8 +31,7 @@ import transformers
 from datasets import load_dataset, load_metric
 from PIL import Image
 from pixel import (
-    AutoConfig,
-    AutoModelForSequenceClassification,
+    auto_register,
     Modality,
     PangoCairoTextRenderer,
     PIXELForSequenceClassification,
@@ -47,6 +46,8 @@ from pixel import (
     resize_model_embeddings,
 )
 from transformers import (
+    AutoConfig,
+    AutoModelForSequenceClassification,
     AutoTokenizer,
     DataCollatorWithPadding,
     EarlyStoppingCallback,

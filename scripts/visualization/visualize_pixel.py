@@ -21,7 +21,7 @@ import torch
 import wandb
 from PIL import Image
 from pixel import (
-    AutoConfig,
+    auto_register,
     PIXELForPreTraining,
     PyGameTextRenderer,
     SpanMaskingGenerator,
@@ -30,7 +30,7 @@ from pixel import (
     resize_model_embeddings,
     truncate_decoder_pos_embeddings,
 )
-from transformers import set_seed
+from transformers import AutoConfig, set_seed
 
 logger = logging.getLogger(__name__)
 

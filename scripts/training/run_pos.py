@@ -25,8 +25,7 @@ import numpy as np
 import transformers
 import wandb
 from pixel import (
-    AutoConfig,
-    AutoModelForTokenClassification,
+    auto_register,
     UPOS_LABELS,
     Modality,
     PangoCairoTextRenderer,
@@ -41,8 +40,9 @@ from pixel import (
 from seqeval.metrics import accuracy_score
 from torch import nn
 from transformers import (
+    AutoConfig,
+    AutoModelForTokenClassification,
     AutoTokenizer,
-    DataCollatorWithPadding,
     EarlyStoppingCallback,
     EvalPrediction,
     HfArgumentParser,

@@ -29,8 +29,7 @@ import transformers
 from datasets import Array3D, Features, Sequence, Value, load_dataset, load_metric
 from PIL import Image
 from pixel import (
-    AutoConfig,
-    AutoModelForQuestionAnswering,
+    auto_register,
     Modality,
     PangoCairoTextRenderer,
     PIXELTrainerForQuestionAnswering,
@@ -42,6 +41,8 @@ from pixel import (
     resize_model_embeddings,
 )
 from transformers import (
+    AutoConfig,
+    AutoModelForQuestionAnswering,
     AutoTokenizer,
     EarlyStoppingCallback,
     EvalPrediction,
