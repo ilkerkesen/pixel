@@ -58,6 +58,7 @@ class Encoding:
     sep_patches: List[int]
     num_text_patches: int
     word_starts: Optional[List[int]] = None
+    word_patch_map: Optional[Dict[int, str]] = None
     offset_mapping: Optional[List[Tuple[int, int]]] = None
     overflowing_patches: Optional[List] = None
     sequence_ids: Optional[List[Optional[int]]] = None

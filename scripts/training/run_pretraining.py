@@ -301,9 +301,11 @@ def main(config_dict: Dict[str, Any] = None):
             f"sampling probability = {d_sampling_prob:.3f}, cache = {d_cache}"
         )
 
-    validation_dataset = load_dataset(
-        data_args.validation_dataset_name, split=data_args.validation_split, use_auth_token=model_args.use_auth_token
-    )
+    validation_dataset = None
+    if data_args.validation_dataset_name is not None:
+        validation_dataset = load_dataset(
+            data_args.validation_dataset_name, split=data_args.validation_split, use_auth_token=model_args.use_auth_token
+        )
 
     config_kwargs = {
         "cache_dir": model_args.cache_dir,
@@ -438,6 +440,7 @@ def main(config_dict: Dict[str, Any] = None):
     def preprocess_images(examples):
         """Preprocess a batch of images by applying transforms."""
 
+        # import ipdb; ipdb.set_trace()
         examples["pixel_values"] = [transforms(image) for image in examples[image_column_name]]
         examples["attention_mask"] = [get_attention_mask(num_patches) for num_patches in examples["num_patches"]]
         if model_args.span_masking:
@@ -452,6 +455,7 @@ def main(config_dict: Dict[str, Any] = None):
         if data_args.streaming:
             train_dataset = train_dataset.with_format("torch")
             train_dataset = train_dataset.shuffle(training_args.seed, buffer_size=10000)
+
         # Filter out examples that are less than one row long in the squared input image
         train_dataset = train_dataset.filter(lambda x: (x["num_patches"] >= 22))
         # Set training transforms
@@ -461,9 +465,15 @@ def main(config_dict: Dict[str, Any] = None):
             train_dataset.set_transform(preprocess_images)
 
     if training_args.do_eval:
-        if data_args.max_eval_samples is not None:
+        if data_args.max_eval_samples is not None and validation_dataset is not None:
             validation_dataset = validation_dataset.shuffle(seed=training_args.seed).select(
                 range(data_args.max_eval_samples)
+            )
+        elif validation_dataset is None:
+            assert data_args.max_eval_samples is not None
+            train_dataset, validation_dataset = train_dataset.train_test_split(
+                test_size=data_args.max_eval_samples,
+                shuffle=False,  # already shuffled.
             )
         # Set the validation transforms
         validation_dataset.set_transform(preprocess_images)

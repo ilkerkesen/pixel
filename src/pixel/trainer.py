@@ -4,7 +4,7 @@ import numpy as np
 import torch
 from torch.utils.data import DataLoader
 from transformers import Trainer, is_torch_tpu_available
-from transformers.deepspeed import deepspeed_init
+from transformers.integrations.deepspeed import deepspeed_init
 from transformers.trainer_pt_utils import IterableDatasetShard, find_batch_size, nested_concat, nested_numpify
 from transformers.trainer_utils import (
     EvalLoopOutput,
